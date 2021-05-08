@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_content %}
+
+<div class="flex flex-col w-full mb-12 text-center">
+    <h1 class="mb-4 text-2xl font-medium text-gray-900 sm:text-3xl title-font">Profile</h1>
+</div>
+
+
+<div class="mx-auto lg:w-1/2 md:w-2/3">
+    {% if messages %}
+    {% for message in messages %}
+    <p {% if message.tags %} class="{{ message.tags }} p-2 rounded text-white" {% endif %}>{{ message }}</li>
+        {% endfor %}
+        {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        {%if form.non_field_errors%}
+            {%for nfe in form.non_field_errors%}
+            <p class="bg-red-500 p-2 rounded text-white">{{nfe}}</li>
+            {%endfor%}
+        {%endif%}
+        <div class="flex flex-wrap -m-2">
+            <div class="w-1/2 p-2">
+                <div class="relative">
+                    <label for="{{ form.first_name.id_for_label }}" class="text-sm leading-7 text-gray-600">First
+                        Name</label>
+                    <input type="text" id="{{ form.first_name.id_for_label }}" name="{{ form.first_name.name }}"
+                        value="{{ form.first_name.value }}"
+                        class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-gray-100 bg-opacity-50 border border-gray-300 rounded outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200">
+                    {% if form.first_name.errors %}
+                    {% for lne in form.first_name.errors %}
+                    <p class="mt-3 text-red-500 text-md">{{lne}}</p>
+                    {% endfor %}
+                    {% endif%}
+                </div>
+            </div>
+            <div class="w-1/2 p-2">
+                <div class="relative">
+                    <label for="{{ form.last_name.id_for_label }}" class="text-sm leading-7 text-gray-600">Last
+                        Name</label>
+                    <input type="text" id="{{ form.last_name.id_for_label }}" name="{{ form.last_name.name }}"
+                        value="{{ form.last_name.value }}"
+                        class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-gray-100 bg-opacity-50 border border-gray-300 rounded outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200">
+                    {% if form.last_name.errors %}
+                    {% for lne in form.last_name.errors %}
+                    <p class="mt-3 text-red-500 text-md">{{lne}}</p>
+                    {% endfor %}
+                    {% endif%}
+                </div>
+            </div>
+            <div class="w-1/2 p-2">
+                <div class="relative">
+                    <label for="{{ form.phone_no.id_for_label }}" class="text-sm leading-7 text-gray-600">Phone
+                        Number</label>
+                    <input maxlength="10" type="text" id="{{ form.phone_no.id_for_label }}"
+                        name="{{ form.phone_no.name }}" value="{{ form.phone_no.value }}"
+                        class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-gray-100 bg-opacity-50 border border-gray-300 rounded outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200">
+                    {% if form.phone_no.errors %}
+                    {% for pne in form.phone_no.errors %}
+                    <p class="mt-3 text-red-500 text-md">{{pne}}</p>
+                    {% endfor %}
+                    {% endif%}
+                </div>
+            </div>
+            <div class="w-1/2 p-2">
+                <div class="relative">
+                    <label for="{{ form.email.id_for_label }}" class="text-sm leading-7 text-gray-600">Email</label>
+                    <input type="email" id="{{ form.email.id_for_label }}" name="{{ form.email.name }}"
+                        value="{{ form.email.value }}"
+                        class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-gray-100 bg-opacity-50 border border-gray-300 rounded outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200">
+                    {% if form.email.errors %}
+                    {% for pne in form.email.errors %}
+                    <p class="mt-3 text-red-500 text-md">{{pne}}</p>
+                    {% endfor %}
+                    {% endif%}
+                </div>
+
+            </div>
+            <div class="w-full p-2">
+                <div class="relative">
+                    <label for="{{form.location.id_for_label}}" class="text-sm leading-7 text-gray-600">Location</label>
+                    <div class="flex flex-row items-center">
+                        <input type="text" id="{{form.location.id_for_label}}" name="{{form.location.name}}"
+                            value="{{form.location.value}}"
+                            class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
+                        <button id="find-me" class="text-sm">Locate Me</button>
+                    </div>
+                    <p class="mt-3 text-sm text-gray-500">Location will be used for searching</p>
+                    {% if form.location.errors %}
+                    {% for pne in form.location.errors %}
+                    <p class="mt-3 text-red-500 text-md">{{pne}}</p>
+                    {% endfor %}
+                    {% endif%}
+                </div>
+            </div>
+            <div class="w-full p-2">
+                <div class="relative">
+                    <label for="{{form.address_line_1.id_for_label}}" class="text-sm leading-7 text-gray-600">Address Line 1</label>
+                    <div class="flex flex-row items-center">
+                        <input type="text" id="{{form.address_line_1.id_for_label}}" name="{{form.address_line_1.name}}"
+                            value="{{form.address_line_1.value}}"
+                            class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
+                    </div>
+                    {% if form.address_line_1.errors %}
+                    {% for pne in form.address_line_1.errors %}
+                    <p class="mt-3 text-red-500 text-md">{{pne}}</p>
+                    {% endfor %}
+                    {% endif%}
+                </div>
+            </div>
+            <div class="w-full p-2">
+                <div class="relative">
+                    <label for="{{form.address_line_2.id_for_label}}" class="text-sm leading-7 text-gray-600">Address Line 2</label>
+                    <div class="flex flex-row items-center">
+                        <input type="text" id="{{form.address_line_2.id_for_label}}" name="{{form.address_line_2.name}}"
+                            value="{{form.address_line_2.value}}"
+                            class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
+                    </div>
+                    {% if form.address_line_2.errors %}
+                    {% for pne in form.address_line_2.errors %}
+                    <p class="mt-3 text-red-500 text-md">{{pne}}</p>
+                    {% endfor %}
+                    {% endif%}
+                </div>
+            </div>
+            <div class="w-full p-2">
+                <div class="relative">
+                    <label for="{{form.state.id_for_label}}" class="text-sm leading-7 text-gray-600">State</label>
+                    <div class="flex flex-row items-center">
+                        <input type="text" id="{{form.state.id_for_label}}" name="{{form.state.name}}"
+                            value="{{form.state.value}}"
+                            class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
+                    </div>
+                    {% if form.state.errors %}
+                    {% for se in form.state.errors %}
+                    <p class="mt-3 text-red-500 text-md">{{se}}</p>
+                    {% endfor %}
+                    {% endif%}
+                </div>
+            </div>
+            <div class="w-full p-2">
+                <div class="relative">
+                    <label for="{{form.city.id_for_label}}" class="text-sm leading-7 text-gray-600">City</label>
+                    <div class="flex flex-row items-center">
+                        <input type="text" id="{{form.city.id_for_label}}" name="{{form.city.name}}"
+                            value="{{form.city.value}}"
+                            class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
+                    </div>
+                    {% if form.city.errors %}
+                    {% for pne in form.city.errors %}
+                    <p class="mt-3 text-red-500 text-md">{{pne}}</p>
+                    {% endfor %}
+                    {% endif%}
+                </div>
+            </div>
+            <div class="w-full p-2">
+                <div class="relative">
+                    <label for="{{form.pincode.id_for_label}}" class="text-sm leading-7 text-gray-600">Pincode</label>
+                    <div class="flex flex-row items-center">
+                        <input type="text" id="{{form.pincode.id_for_label}}" name="{{form.pincode.name}}"
+                            value="{{form.pincode.value}}"
+                            class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
+                    </div>
+                    {% if form.pincode.errors %}
+                    {% for pne in form.pincode.errors %}
+                    <p class="mt-3 text-red-500 text-md">{{pne}}</p>
+                    {% endfor %}
+                    {% endif%}
+                </div>
+            </div>
+            <div class="w-1/2 p-2">
+                <div class="relative mb-4">
+                    <label for="{{form.provider_type.id_for_label}}" class="text-sm leading-7 text-gray-600">I can
+                        provide</label><br />
+                    {% for eo in form.provider_type%}
+                    {{ eo }}
+                    {% endfor %}
+                    {% if form.provider_type.errors %}
+                    {% for ee in form.provider_type.errors %}
+                    <p class="mt-3 text-xs text-red-500">{{ee}}</p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+            </div>
+            <div class="w-1/2 p-2">
+                <div class="relative mb-4">
+                    <label for="{{form.consumer_type.id_for_label}}" class="text-sm leading-7 text-gray-600">I
+                        need</label><br />
+                    {% for eo in form.consumer_type%}
+                    {{ eo }}
+                    {% endfor %}
+                    {% if form.consumer_type.errors %}
+                    {% for ee in form.consumer_type.errors %}
+                    <p class="mt-3 text-xs text-red-500">{{ee}}</p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="relative">
+                <button
+                    class="px-8 py-2 mr-4 text-lg text-white bg-indigo-500 border-0 rounded focus:outline-none hover:bg-indigo-600"
+                    type="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+{% endblock %}
+
+
+{% block page_scripts %}
+<script src="{% static 'js/profile_script.js' %}"></script>
+{% endblock %}

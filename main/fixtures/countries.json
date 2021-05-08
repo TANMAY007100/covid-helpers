@@ -1,0 +1,10 @@
+[
+    {
+        "model": "main.country",
+        "pk": 1,
+        "fields": {
+            "name": "India",
+            "continent": 1
+        }
+    }
+]

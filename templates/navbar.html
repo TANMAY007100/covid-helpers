@@ -1,0 +1,20 @@
+<header class="text-gray-600 body-font">
+    <div class="container flex flex-col flex-wrap items-center p-5 mx-auto md:flex-row">
+        <a href="{% url 'home' %}" class="flex items-center mb-4 font-medium text-gray-900 title-font md:mb-0">
+            <span class="ml-3 text-xl">Covid Fighters</span>
+        </a>
+        <nav class="flex flex-wrap items-center justify-center text-base md:ml-auto">
+            <a href="/" class="mr-4 hover:text-gray-900">Home</a>
+            <a href="/oxygen" class="mr-4 hover:text-gray-900">Oxygen</a>
+            <a href="/remdesivir" class="mr-4 hover:text-gray-900">Remdesivir</a>
+            <a href="/plasma" class="mr-4 hover:text-gray-900">Plasma</a>
+            {% if user.is_authenticated %}
+            <a href="/profile" class="px-2 py-1 mr-4 text-white bg-green-600 rounded hover:text-gray-900">Settings</a>
+            <a href="/logout" class="px-2 py-1 mr-4 text-white bg-red-600 rounded hover:text-gray-900">Logout</a>
+            {% else %}
+            <a href="/login" class="px-2 py-1 mr-4 text-white bg-blue-600 rounded hover:ring-4">Signin</a>
+            <a href="/register" class="px-2 py-1 mr-4 text-white bg-green-600 rounded hover:ring-4">Register</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>

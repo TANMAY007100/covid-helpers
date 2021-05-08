@@ -1,0 +1,9 @@
+[
+    {
+        "model": "main.continent",
+        "pk": 1,
+        "fields": {
+            "name": "Asia"
+        }
+    }
+]

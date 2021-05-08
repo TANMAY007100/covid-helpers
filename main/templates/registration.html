@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_content %}
+<div class="w-full mx-auto md:w-1/2">
+    {% if messages %}
+        {% for message in messages %}
+            <p {% if message.tags %} class="{{ message.tags }} p-2 rounded text-white" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="flex flex-col p-4 mx-auto bg-gray-100 rounded-lg md:ml-auto md:mt-0">
+            <h2 class="mb-5 text-lg font-medium text-gray-900 title-font">Register</h2>
+            {%if form.non_field_errors%}
+            <p class="mt-3 text-lg text-red-500">Please correct errors below</p>
+            <div class="relative mb-4">
+                {%for nfe in form.non_field_errors %}
+                    <p class="mt-3 text-red-500 rounded text-md">{{nfe}}</p>
+                {%endfor%}
+            </div>
+            {%endif%}
+            <div class="relative mb-4">
+                <label for="{{form.username.id_for_label}}" class="leading-7 text-gray-600 text-md">Username</label>
+                <input type="text" id="{{form.username.id_for_label}}" name="{{form.username.name}}"
+                    class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
+                {% if form.username.errors %}
+                    {% for ue in form.username.errors %}
+                        <p class="mt-3 text-red-500 text-md">{{ue}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="relative mb-4">
+                <label for="{{form.email.id_for_label}}" class="leading-7 text-gray-600 text-md">Email</label>
+                <input type="email" id="{{form.email.id_for_label}}" name="{{form.email.name}}"
+                    class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
+                <p class="mt-3 text-sm text-gray-500">Updates will be sent on email</p>
+                {% if form.email.errors %}
+                    {% for ee in form.email.errors %}
+                        <p class="mt-3 text-red-500 text-md">{{ee}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="relative mb-4">
+                <label for="{{form.phone_number.id_for_label}}" class="leading-7 text-gray-600 text-md">Phone
+                    Number</label>
+                <div class="flex flex-row items-center ">
+                    <span class="mr-2 text-base text-gray-700 align-middle">+91</span>
+                    <input maxlength="10" type="text" id="{{form.phone_number.id_for_label}}"
+                        name="{{form.phone_number.name}}"
+                        class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
+                </div>
+                {% if form.phone_number.errors %}
+                    {% for pne in form.phone_number.errors %}
+                        <p class="mt-3 text-red-500 text-md">{{pne}}</p>
+                    {% endfor %}
+                {% endif%}
+            </div>
+            <div class="relative mb-4">
+                <label for="{{form.location.id_for_label}}"
+                    class="leading-7 text-gray-600 text-md">Location</label><span
+                    class="ml-1 text-xs text-gray-500">Click on Locate me</span>
+                <div class="flex flex-row items-center">
+                    <input type="text" id="{{form.location.id_for_label}}" name="{{form.location.name}}"
+                        class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+                        readonly>
+                    <button id="find-me" class="ml-1 text-sm text-white bg-indigo-500 rounded">Locate Me</button>
+                </div>
+                <p class="mt-3 text-sm text-gray-500">Location will be used for searching</p>
+                {% if form.location.errors %}
+                    {% for pne in form.location.errors %}
+                        <p class="mt-3 text-red-500 text-md">{{pne}}</p>
+                    {% endfor %}
+                {% endif%}
+            </div>
+            <div class="relative mb-4">
+                <label for="{{form.password1.id_for_label}}" class="leading-7 text-gray-600 text-md">Password</label>
+                <input type="password" id="{{form.password1.id_for_label}}" name="{{form.password1.name}}"
+                    class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
+                {% if form.password1.errors %}
+                    {% for ee in form.password1.errors %}
+                        <p class="mt-3 text-red-500 text-md">{{ee}}</p>
+                    {% endfor %}
+                {% endif %}
+                {% if form.password1.help_text %}
+                <p class="mt-3 text-xs text-black">
+                    {{ form.password1.help_text }}
+                </p>
+                {% endif %}
+            </div>
+            <div class="relative mb-4">
+                <label for="{{form.password2.id_for_label}}" class="leading-7 text-gray-600 text-md">Confirm
+                    Password</label>
+                <input type="password" id="{{form.password2.id_for_label}}" name="{{form.password2.name}}"
+                    class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
+                {% if form.password2.errors %}
+                    {% for ee in form.password2.errors %}
+                        <p class="mt-3 text-red-500 text-md">{{ee}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="relative mb-4">
+                <label for="{{form.provider_type.id_for_label}}" class="leading-7 text-gray-600 text-md">Can you provide
+                    all/any of the following?</label><br />
+                {% for eo in form.provider_type%}
+                {{ eo }}
+                {% endfor %}
+                {% if form.provider_type.errors %}
+                    {% for ee in form.provider_type.errors %}
+                        <p class="mt-3 text-xs text-red-500">{{ee}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="relative mb-4">
+                <label for="{{form.consumer_type.id_for_label}}" class="leading-7 text-gray-600 text-md">Are you in need
+                    of?</label><br />
+                {% for eo in form.consumer_type%}
+                {{ eo }}
+                {% endfor %}
+                {% if form.consumer_type.errors %}
+                    {% for ee in form.consumer_type.errors %}
+                        <p class="mt-3 text-xs text-red-500">{{ee}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="relative flex flex-row mb-4">
+                <button
+                    class="w-1/2 px-8 py-2 mr-4 text-lg text-white bg-indigo-500 border-0 rounded focus:outline-none hover:bg-indigo-600"
+                    type="submit">Submit</button>
+                <button
+                    class="w-1/2 px-8 py-2 text-lg text-white bg-indigo-500 border-0 rounded focus:outline-none hover:bg-indigo-600"
+                    type="reset">Reset</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}
+
+{% block page_scripts %}
+<script src="{% static 'js/registration_script.js' %}"></script>
+{% endblock %}
