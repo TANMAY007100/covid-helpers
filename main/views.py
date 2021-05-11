@@ -1,6 +1,5 @@
 import re
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
 from django.contrib import messages
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -15,9 +14,10 @@ import pymongo
 
 logger = logging.getLogger('general')
 
+mongodb_client = pymongo.MongoClient(f"mongodb+srv://{settings.MONGODB_USER}:{settings.MONGODB_PASSWORD}@{settings.MONGODB_CLUSTER_ADDRESS}")
+
 def home(request):
     title = 'Providers'
-    mongodb_client = pymongo.MongoClient(f"mongodb+srv://{settings.MONGODB_USER}:{settings.MONGODB_PASSWORD}@{settings.MONGODB_CLUSTER_ADDRESS}")
     db = mongodb_client[settings.MONGODB_DATABASE_NAME]
     collection = db[settings.MONGODB_COLLECTION]
     if request.user.is_authenticated:
@@ -78,6 +78,8 @@ def home(request):
     return render(request, 'home.html', {'users': get_users, 'result_title': title})
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     if request.method == 'GET':
         register_form = RegistrationForm()
         return render(request, 'registration.html', {'form': register_form})
@@ -163,6 +165,7 @@ class Login(LoginView):
 
     template_name = 'login.html'
     form_class = SignInForm
+    redirect_authenticated_user = True
 
 @login_required
 def profile(request):
@@ -311,7 +314,7 @@ def profile(request):
 def oxygen(request):
     if request.method == 'GET':
         title = 'Providers'
-        mongodb_client = pymongo.MongoClient(f"mongodb+srv://{settings.MONGODB_USER}:{settings.MONGODB_PASSWORD}@{settings.MONGODB_CLUSTER_ADDRESS}")
+        # mongodb_client = pymongo.MongoClient(f"mongodb+srv://{settings.MONGODB_USER}:{settings.MONGODB_PASSWORD}@{settings.MONGODB_CLUSTER_ADDRESS}")
         db = mongodb_client[settings.MONGODB_DATABASE_NAME]
         collection = db[settings.MONGODB_COLLECTION]
         if request.user.is_authenticated:
@@ -377,7 +380,7 @@ def oxygen(request):
 def remdesivir(request):
     if request.method == 'GET':
         title = 'Providers'
-        mongodb_client = pymongo.MongoClient(f"mongodb+srv://{settings.MONGODB_USER}:{settings.MONGODB_PASSWORD}@{settings.MONGODB_CLUSTER_ADDRESS}")
+        # mongodb_client = pymongo.MongoClient(f"mongodb+srv://{settings.MONGODB_USER}:{settings.MONGODB_PASSWORD}@{settings.MONGODB_CLUSTER_ADDRESS}")
         db = mongodb_client[settings.MONGODB_DATABASE_NAME]
         collection = db[settings.MONGODB_COLLECTION]
         if request.user.is_authenticated:
@@ -443,7 +446,7 @@ def remdesivir(request):
 def plasma(request):
     if request.method == 'GET':
         title = 'Providers'
-        mongodb_client = pymongo.MongoClient(f"mongodb+srv://{settings.MONGODB_USER}:{settings.MONGODB_PASSWORD}@{settings.MONGODB_CLUSTER_ADDRESS}")
+        # mongodb_client = pymongo.MongoClient(f"mongodb+srv://{settings.MONGODB_USER}:{settings.MONGODB_PASSWORD}@{settings.MONGODB_CLUSTER_ADDRESS}")
         db = mongodb_client[settings.MONGODB_DATABASE_NAME]
         collection = db[settings.MONGODB_COLLECTION]
         if request.user.is_authenticated:

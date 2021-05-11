@@ -42,7 +42,12 @@ MESSAGE_TAGS = {
 
 IS_HEROKU = config('IS_HEROKU', False, cast=bool)
 
-REDIS_URL = config('REDIS_URL', 'redis://')
+REDIS_HOST = config('REDIS_HOST', 'lcoalhost')
+REDIS_PORT = config('REDIS_PORT', '6379')
+REDIS_PASSWORD = config('REDIS_PASSWORD', 'pass')
+REDIS_DB = config('REDIS_DB', '0')
+
+REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
 
 # Application definition
 
@@ -180,7 +185,7 @@ MONGODB_COLLECTION = config('MONGODB_COLLECTION', 'mongo_collect')
 
 CELERY_TIMEZONE = "Asia/Kolkata"
 CELERY_TASK_TIME_LIMIT = 30 * 60
-CELERY_BROKER_URL = config('CELERY_BROKER_URL', 'redis://')
+CELERY_BROKER_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
 
 
 LOGGING = {
