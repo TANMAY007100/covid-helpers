@@ -1,9 +1,13 @@
 from ch_settings.celery import app as celery_app
 from django.conf import settings
+from django.template.loader import render_to_string
 from .models import User, UserAddress
 import pymongo
 
 import logging
+import boto3
+
+ses_client = boto3.client('ses')
 
 logger = logging.getLogger('general')
 
@@ -124,3 +128,56 @@ def update_mongodb_collection(self):
             user['id'] = eu.id
             collection.insert_one(user)
     print ("update_mongodb_collection Ended")
+
+
+@celery_app.task(bind=True)
+def send_email(self, user_id):
+    user = User.objects.get(id=user_id)
+    if user:
+        # Check user type
+        search_type = 'consumer' if user.user_type == 'provider' else 'provider'
+        try:
+            get_users = User.objects.filter(user_type=search_type).all()
+            email_context_data = {
+                "user": user,
+                "domain": settings.DOMAIN_NAME,
+                "email_type": "needing" if user.user_type == 'provider' else "having",
+                "user_list": get_users,
+                "contact_email": settings.CONTACT_EMAIL,
+            }
+            html_email = render_to_string('email_templates/users_info_template.html', context=email_context_data)
+            plain_email = render_to_string('email_templates/users_info_template.txt', context=email_context_data)
+            try:
+                ses_client.send_email(
+                    Destination={
+                        'ToAddresses': [
+                            user.email
+                        ],
+                    },
+                    Message={
+                        'Body': {
+                            'Html': {
+                                'Charset': 'UTF-8',
+                                'Data': html_email,
+                            },
+                            'Text': {
+                                'Charset': 'UTF-8',
+                                'Data': plain_email,
+                            },
+                        },
+                        'Subject': {
+                            'Charset': 'UTF-8',
+                            'Data': settings.SIGNUP_SUBJECT,
+                        },
+                    },
+                    ReplyToAddresses=[
+                        settings.REPLY_TO_ADDRESS
+                    ],
+                    Source=settings.SENDER_EMAIL,
+                )
+            except Exception as ex:
+                logger.error("Failed to Send email")
+                logger.error(ex)
+        except Exception as ex:
+            logger.error("Something went wrong")
+            logger.error(ex)

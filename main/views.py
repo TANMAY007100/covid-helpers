@@ -1,13 +1,14 @@
-import re
 from django.shortcuts import redirect, render
+from django.http import HttpResponse
 from django.contrib import messages
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from django.urls.base import reverse
 
 from .forms import RegistrationForm, SignInForm, ProfileForm
 from .models import User, UserAddress
-from .tasks import save_to_mongodb, update_mongodb_data
+from .tasks import save_to_mongodb, update_mongodb_data, send_email
 
 import logging
 import pymongo
@@ -145,7 +146,6 @@ def register(request):
                 user.location = [{"lat": float(latitude), "lon": float(longitude)}]
                 user.save()
                 logger.info("User successfully registered")
-                request.session['just_registered'] = True
                 # Add to MongoDB
                 save_to_mongodb.apply_async(kwargs={'user_id': user.id})
             except Exception as ex:
@@ -153,9 +153,11 @@ def register(request):
                 logger.error(ex)
                 if register_form.errors:
                     return render(request, 'registration.html', {"form": register_form})
-                messages.error(request, "Something went wrong please register again")
+                messages.error(request, message="Something went wrong please register again")
                 return redirect('register')
-            return redirect('thank_you')
+            send_email.apply_async(kwargs={'user_id': user.id})
+            messages.success(request, message="Registration successful. You can login now.")
+            return redirect('login')
         else:
             logger.error(register_form.errors)
         return render(request, 'registration.html', {"form": register_form})
@@ -166,6 +168,17 @@ class Login(LoginView):
     template_name = 'login.html'
     form_class = SignInForm
     redirect_authenticated_user = True
+
+    def form_valid(self, form) -> HttpResponse:
+        super_form_valid = super().form_valid(form)
+        if self.request.user.is_authenticated:
+            check_user = User.objects.filter(id=self.request.user.id).first()
+            if not check_user.first_name:
+                details_missing_message = f"Please update your personal details <a class='underline' href='{reverse('profile')}'>here</a>."
+                details_incomplete_message = f"People might not call you if your details are incomplete."
+                messages.info(self.request, message=details_missing_message, extra_tags='safe text-white')
+                messages.warning(self.request, message=details_incomplete_message)
+        return super_form_valid
 
 @login_required
 def profile(request):
@@ -314,7 +327,6 @@ def profile(request):
 def oxygen(request):
     if request.method == 'GET':
         title = 'Providers'
-        # mongodb_client = pymongo.MongoClient(f"mongodb+srv://{settings.MONGODB_USER}:{settings.MONGODB_PASSWORD}@{settings.MONGODB_CLUSTER_ADDRESS}")
         db = mongodb_client[settings.MONGODB_DATABASE_NAME]
         collection = db[settings.MONGODB_COLLECTION]
         if request.user.is_authenticated:
@@ -380,7 +392,6 @@ def oxygen(request):
 def remdesivir(request):
     if request.method == 'GET':
         title = 'Providers'
-        # mongodb_client = pymongo.MongoClient(f"mongodb+srv://{settings.MONGODB_USER}:{settings.MONGODB_PASSWORD}@{settings.MONGODB_CLUSTER_ADDRESS}")
         db = mongodb_client[settings.MONGODB_DATABASE_NAME]
         collection = db[settings.MONGODB_COLLECTION]
         if request.user.is_authenticated:
@@ -446,7 +457,6 @@ def remdesivir(request):
 def plasma(request):
     if request.method == 'GET':
         title = 'Providers'
-        # mongodb_client = pymongo.MongoClient(f"mongodb+srv://{settings.MONGODB_USER}:{settings.MONGODB_PASSWORD}@{settings.MONGODB_CLUSTER_ADDRESS}")
         db = mongodb_client[settings.MONGODB_DATABASE_NAME]
         collection = db[settings.MONGODB_COLLECTION]
         if request.user.is_authenticated:

@@ -188,6 +188,18 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_BROKER_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
 
 
+# AWS Settings
+
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', 'access_key_id')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', 'secret_access_key')
+AWS_DEFAULT_REGION = config('AWS_DEFAULT_REGION', 'us-east-1')
+
+DOMAIN_NAME = config('DOMAIN_NAME', 'example.com')
+CONTACT_EMAIL = config('CONTACT_EMAIL', 'contact@example.com')
+SENDER_EMAIL = config('SENDER_EMAIL', 'admin@example.com')
+SIGNUP_SUBJECT = config('SIGNUP_SUBJECT', f'Welcome to {DOMAIN_NAME}')
+REPLY_TO_ADDRESS = config('REPLY_TO_ADDRESS', 'info@example.com')
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

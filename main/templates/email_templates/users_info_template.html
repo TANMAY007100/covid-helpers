@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Info</title>
+    <style>
+        table,
+        td,
+        th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    Hi {%if user.first_name%}{{user.first_name}}{%else%}{{user.username}}{%endif%},
+    <br />
+    <br />
+    Thank you for signing up on {{domain}}. Please find information below:
+    <br />
+    <br />
+    Since you are a registered as {{user.user_type}} following are users who will be {{email_type}} the resources
+    <br />
+    <br />
+    {%if user_list%}
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Phone No</th>
+            <th>Oxygen</th>
+            <th>Remdesivir</th>
+            <th>Plasma</th>
+            <th>Location</th>
+        </tr>
+        {%for eu in user_list%}
+        <tr>
+            <td>{%if eu.first_name or eu.last_name%}{{eu.first_name}} {{eu.last_name}}{%else%}User
+                {{forloop.counter}}{%endif%}</td>
+            <td>+91{{eu.phone_no}}</td>
+            <td>{%if eu.oxygen%}Yes{%else%}No{%endif%}</td>
+            <td>{%if eu.remdesivir%}Yes{%else%}No{%endif%}</td>
+            <td>{%if eu.plasma%}Yes{%else%}No{%endif%}</td>
+            <td><a
+                    href="https://www.google.com/maps/search/?api=1&query={{eu.location.0.lat}},{{eu.location.0.lon}}">View</a>
+            </td>
+        </tr>
+        {%endfor%}
+    </table>
+    <br /><br />
+    {%endif%}
+    <strong>Note:</strong> In case you find any discrepancy in the information provided above and/or if any user is
+    unreachable by phone no please do not visit the location directly send an email to <a
+        href="mailto:{{contact_email}}">{{contact_email}}</a> with the user details and I will get back to you.
+</body>
+</html>
