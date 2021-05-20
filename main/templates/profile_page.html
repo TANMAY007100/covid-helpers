@@ -22,7 +22,7 @@
         {% csrf_token %}
         {%if form.non_field_errors%}
             {%for nfe in form.non_field_errors%}
-            <p class="bg-red-500 p-2 rounded text-white">{{nfe}}</li>
+            <p class="p-2 text-white bg-red-500 rounded">{{nfe}}</li>
             {%endfor%}
         {%endif%}
         <div class="flex flex-wrap -m-2">
@@ -210,11 +210,6 @@
             </div>
         </div>
     </form>
-</div>
-<div class="mx-auto mt-4 lg:w-1/2 md:w-2/3">
-    <h2 class="text-lg">Account Settings</h2>
-    <hr class="my-2" />
-    <a class="py-2 px-2 bg-red-600 text-white inline-block rounded" href="{%url 'account_delete'%}">Delete Account</a>
 </div>
 {% endblock %}
 

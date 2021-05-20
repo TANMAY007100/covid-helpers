@@ -117,7 +117,7 @@ def register(request):
                 if "oxygen" in provider_type:
                     oxygen = True
 
-                if "remdesivir" in provider_type:
+                if "freefood" in provider_type:
                     remdesivir = True
 
                 if "plasma" in provider_type:
@@ -129,7 +129,7 @@ def register(request):
                 if "oxygen" in consumer_type:
                     oxygen = True
 
-                if "remdesivir" in consumer_type:
+                if "freefood" in consumer_type:
                     remdesivir = True
 
                 if "plasma" in consumer_type:
@@ -252,7 +252,7 @@ def profile(request):
                 if "oxygen" in provider_type:
                     oxygen = True
 
-                if "remdesivir" in provider_type:
+                if "freefood" in provider_type:
                     remdesivir = True
 
                 if "plasma" in provider_type:
@@ -264,7 +264,7 @@ def profile(request):
                 if "oxygen" in consumer_type:
                     oxygen = True
 
-                if "remdesivir" in consumer_type:
+                if "freefood" in consumer_type:
                     remdesivir = True
 
                 if "plasma" in consumer_type:

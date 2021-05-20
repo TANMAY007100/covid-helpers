@@ -13,7 +13,7 @@ Phone No: +91{{eu.phone_no}}
 Resources:
 
 Oxygen: {%if eu.oxygen%}Yes{%else%}No{%endif%}
-Remdesivir: {%if eu.remdesivir%}Yes{%else%}No{%endif%}
+Free Food: {%if eu.remdesivir%}Yes{%else%}No{%endif%}
 Plasma: {%if eu.plasma%}Yes{%else%}No{%endif%}
 
 Check Location: https://www.google.com/maps/search/?api=1&query={{eu.location.0.lat}},{{eu.location.0.lon}}

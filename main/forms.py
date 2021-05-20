@@ -8,8 +8,8 @@ from .models import User
 
 logger = logging.getLogger('general')
 
-PROVIDER_CHOICES = [('oxygen', 'Oxygen'), ('remdesivir', 'Remdesivir'), ('plasma', 'Plasma')]
-CONSUMER_CHOICES = [('oxygen', 'Oxygen'), ('remdesivir', 'Remdesivir'), ('plasma', 'Plasma')]
+PROVIDER_CHOICES = [('oxygen', 'Oxygen'), ('freefood', 'Free Food'), ('plasma', 'Plasma')]
+CONSUMER_CHOICES = [('oxygen', 'Oxygen'), ('freefood', 'Free Food'), ('plasma', 'Plasma')]
 
 phone_number_regex = '\d{10}'
 
