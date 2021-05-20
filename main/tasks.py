@@ -7,7 +7,7 @@ import pymongo
 import logging
 import boto3
 
-ses_client = boto3.client('ses', region_name=settings.AWS_DEFAULT_REGION)
+ses_client = boto3.client('ses')
 
 logger = logging.getLogger('general')
 

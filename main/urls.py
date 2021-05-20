@@ -6,7 +6,7 @@ from .views import home, register, Login, profile, oxygen, remdesivir, plasma, t
 urlpatterns = [
     path('', home, name='home'),
     path('oxygen', oxygen, name='oxygen'),
-    path('freefood', remdesivir, name='freefood'),
+    path('free-food', remdesivir, name='free-food'),
     path('plasma', plasma, name='plasma'),
     path('register', register, name='register'),
     path('login', Login.as_view(), name='login'),
