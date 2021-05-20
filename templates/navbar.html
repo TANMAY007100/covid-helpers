@@ -5,15 +5,15 @@
         </a>
         <nav class="flex flex-wrap items-center justify-center text-base md:ml-auto">
             <a href="/" class="mr-4 hover:text-gray-900">Home</a>
-            <a href="/oxygen" class="mr-4 hover:text-gray-900">Oxygen</a>
-            <a href="/free-food" class="mr-4 hover:text-gray-900">Free Food</a>
-            <a href="/plasma" class="mr-4 hover:text-gray-900">Plasma</a>
+            <a href="{%url 'oxygen'%}" class="mr-4 hover:text-gray-900">Oxygen</a>
+            <a href="{%url 'free-food'%}" class="mr-4 hover:text-gray-900">Free Food</a>
+            <a href="{%url 'plasma'%}" class="mr-4 hover:text-gray-900">Plasma</a>
             {% if user.is_authenticated %}
-            <a href="/profile" class="px-2 py-1 mr-4 text-white bg-green-600 rounded hover:text-gray-900">Settings</a>
-            <a href="/logout" class="px-2 py-1 mr-4 text-white bg-red-600 rounded hover:text-gray-900">Logout</a>
+            <a href="{%url 'profile'%}" class="px-2 py-1 mr-4 text-white bg-green-600 rounded hover:text-gray-900">Settings</a>
+            <a href="{%url 'logout'%}" class="px-2 py-1 mr-4 text-white bg-red-600 rounded hover:text-gray-900">Logout</a>
             {% else %}
-            <a href="/login" class="px-2 py-1 mr-4 text-white bg-blue-600 rounded hover:ring-4">Signin</a>
-            <a href="/register" class="px-2 py-1 mr-4 text-white bg-green-600 rounded hover:ring-4">Register</a>
+            <a href="{%url 'login'%}" class="px-2 py-1 mr-4 text-white bg-blue-600 rounded hover:ring-4">Signin</a>
+            <a href="{%url 'register'%}" class="px-2 py-1 mr-4 text-white bg-green-600 rounded hover:ring-4">Register</a>
             {% endif %}
         </nav>
     </div>
